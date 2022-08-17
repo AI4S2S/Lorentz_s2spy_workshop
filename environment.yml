@@ -1,0 +1,42 @@
+name: s2spy
+channels:
+  - conda-forge
+
+
+dependencies:
+  - cartopy
+  - cftime
+  - conda
+  - climpred
+  - xeofs
+  - h5py
+  - hdf4
+  - hdf5
+  - ipython
+  - matplotlib
+  - matplotlib-base
+  - nbconvert
+  - nbformat
+  - netcdf4
+  - numpy
+  - pandas
+  - pip
+  - python>=3.8, <=3.9
+  - scikit-learn
+  - scipy
+  - seaborn
+  - shapely
+  - statsmodels
+  - xarray
+  - properscoring
+  - joblib # <- for parallel computing
+  - esmf # <- optional packages for regridding
+  - xesmf # <- optional packages for regridding
+  - pip:
+    - s2spy
+prefix: ~/miniconda3/envs/s2spy
+
+# If mamba has not been installed in your conda base environment, then please run:
+# conda install mamba -n base -c conda-forge
+# mamba env create -f environment.yml
+
