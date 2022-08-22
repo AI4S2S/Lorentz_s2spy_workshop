@@ -15,7 +15,7 @@ dependencies:
   - ipython
   - matplotlib
   - matplotlib-base
-  - nbconvert
+  - nb_conda_kernels
   - nbformat
   - netcdf4
   - numpy
@@ -39,4 +39,7 @@ prefix: ~/miniconda3/envs/s2spy
 # If mamba has not been installed in your conda base environment, then please run:
 # conda install mamba -n base -c conda-forge
 # mamba env create -f environment.yml
-
+# after installing:
+# conda activate s2spy 
+# conda install ipykernel
+# ipython kernel install --user --name=s2spy
