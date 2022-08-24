@@ -1,4 +1,4 @@
-name: s2spy
+name: s2spy_eofs
 channels:
   - conda-forge
 
@@ -22,6 +22,7 @@ dependencies:
   - pandas
   - pip
   - python>=3.8, <=3.9
+  - ipython
   - scikit-learn
   - pytables
   - scipy
@@ -29,17 +30,21 @@ dependencies:
   - shapely
   - statsmodels
   - xarray
+  - eofs
   - properscoring
   - joblib # <- for parallel computing
   - esmf # <- optional packages for regridding
   - xesmf # <- optional packages for regridding
   # - pip:
   #   - s2spy
-prefix: ~/miniconda3/envs/s2spy
+prefix: ~/miniconda3/envs/s2spy_eofs
 
 # If mamba has not been installed in your conda base environment, then please run:
 # conda install mamba -n base -c conda-forge
 # mamba env create -f environment.yml
 # after installing:
 # conda activate s2spy 
-# python -m ipykernel install --user --name=
+# should already be installed, but: 
+# mamba install ipykernel
+# python -m ipykernel install --user --name=s2spy
+# or ipython kernel install --user --name=s2spy
