@@ -374,7 +374,7 @@ def detrend_anom_ncdf3D(ds, outfile, loadleap=False,
 #    diff = output - abs(marray)
 #    diff.to_netcdf(filename.replace('.nc', 'diff.nc'))
     #%%
-    return
+    return output
 
 def detrend_xarray_ds_2D(ds, detrend, anomaly, apply_fft=False, n_harmonics=6,
                          kwrgs_NaN_handling: dict=None):
