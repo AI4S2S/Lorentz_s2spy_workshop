@@ -22,6 +22,7 @@ dependencies:
   - pandas
   - pip
   - python>=3.8, <=3.9
+  - ipython
   - scikit-learn
   - pytables
   - scipy
@@ -33,8 +34,8 @@ dependencies:
   - joblib # <- for parallel computing
   - esmf # <- optional packages for regridding
   - xesmf # <- optional packages for regridding
-  # - pip:
-  #   - s2spy
+  - pip:
+    - s2spy
 prefix: ~/miniconda3/envs/s2spy
 
 # If mamba has not been installed in your conda base environment, then please run:
@@ -42,4 +43,7 @@ prefix: ~/miniconda3/envs/s2spy
 # mamba env create -f environment.yml
 # after installing:
 # conda activate s2spy 
-# python -m ipykernel install --user --name=
+# should already be installed, but: 
+# mamba install ipykernel
+# python -m ipykernel install --user --name=s2spy
+# or ipython kernel install --user --name=s2spy
