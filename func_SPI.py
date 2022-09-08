@@ -15,23 +15,31 @@ def calc_SPI_gs_doy(df_gs, doy):
     '''
     df_gs_m = df_gs[df_gs.index.dayofyear == doy]
     # note floc avoids loc being fitted, see Stagge et al. 2015
-    params = stats.gamma.fit(df_gs_m.values, loc=0) # fit parameters of gamma distribution to SPI data 
-    rv = stats.gamma(*params) # Continuous random variable class, can sample randomly from the gamma                distribution we just fitted  
-    
-    # Account for zero values (cfr.Stagge et al. 2015))  
-    indices_nonzero = np.nonzero(df_gs_m.values)[0]
-    nyears_zero = len(df_gs_m) - np.count_nonzero(df_gs_m)
-    ratio_zeros = nyears_zero / len(df_gs_m)
+    # more then 80% of datapoint should be unequal to 0
+    if (df_gs_m[df_gs_m != 0].size / df_gs_m.size) >= 0.8: 
+        try:
+            params = stats.gamma.fit(df_gs_m.values, loc=0) # fit parameters of gamma distribution to SPI data 
+            rv = stats.gamma(*params) # Continuous random variable class, can sample randomly from the gamma                distribution we just fitted  
 
-    p_zero_mean = (nyears_zero + 1) / (2 * (len(df_gs_m) + 1))           
-    prob_gamma = (df_gs_m * 0 ) + p_zero_mean
-    # probability of values, given the Gamma distribution and excluding zeros
-    prob_gamma[indices_nonzero] = ratio_zeros+((1-ratio_zeros)*rv.cdf(df_gs_m[indices_nonzero]))
-    
-    # Transform Gamma probabilities to standard normal probabilities
-    prob_std = stats.norm.ppf(prob_gamma)                                   
-    prob_std[prob_std>3] = 3
-    prob_std[prob_std<-3] = -3 
+            # Account for zero values (cfr.Stagge et al. 2015))  
+            indices_nonzero = np.nonzero(df_gs_m.values)[0]
+            nyears_zero = len(df_gs_m) - np.count_nonzero(df_gs_m)
+            ratio_zeros = nyears_zero / len(df_gs_m)
+
+            p_zero_mean = (nyears_zero + 1) / (2 * (len(df_gs_m) + 1))           
+            prob_gamma = (df_gs_m * 0 ) + p_zero_mean
+            # probability of values, given the Gamma distribution and excluding zeros
+            prob_gamma[indices_nonzero] = ratio_zeros+((1-ratio_zeros)*rv.cdf(df_gs_m[indices_nonzero]))
+
+            # Transform Gamma probabilities to standard normal probabilities
+            prob_std = stats.norm.ppf(prob_gamma)                                   
+            prob_std[prob_std>3] = 3
+            prob_std[prob_std<-3] = -3 
+        except:
+            print('Failed at gridcell', df_gs_m)
+            prob_std = np.nan
+    else:
+        prob_std = np.nan
     return prob_std
 
 def calc_SPI_gs_pentad(df_gs, p):
@@ -92,7 +100,10 @@ def calc_SPI_from_daily(xarray, SPI_aggr, freq='months'):
                 np_tofill = np.zeros( dates.dayofyear.size,  n_gs_no_nans)
             for doy in np.unique(dates.dayofyear):
                 mask_doy = dates.dayofyear == doy
-                np_tofill[mask_doy,i] = calc_SPI_gs_doy(df_no_nans[gs], doy)
+                try:
+                    np_tofill[mask_doy,i] = calc_SPI_gs_doy(df_no_nans[gs], doy)
+                except:
+                    print('Failed at latlon:', df_no_nans[gs])
                 
         if freq == 'pentads':
             np_tofill = np.zeros( (int(dates.size/5),  n_gs_no_nans)) 

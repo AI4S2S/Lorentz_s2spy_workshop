@@ -8,7 +8,6 @@ Created on Thur Aug 4 2022
 import numpy as np
 import pandas as pd
 import xarray as xr
-import xesmf as xe
 from typing import Union
 import itertools
 
@@ -161,6 +160,7 @@ def view_or_replace_labels(xarr: xr.DataArray, regions: Union[int,list],
     return xarr
 
 def regrid_xarray(xarray_in, to_grid_res, periodic=True):
+    import xesmf as xe
     #%%
     '''
     Only supports 2 (lat, lon) or 3 (time, lat, lon) xr.DataArrays
